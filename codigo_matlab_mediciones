@@ -1,0 +1,30 @@
+clc; close all; clear all;
+syms L Cm;
+
+% 1. Corrección de notación científica: Usa 'e12' o '10^12', no 'e12' directamente como variable.
+fop = 14.4e6; 
+fopp = 10e6;
+Cx = 120e-12;
+Ct = 79.16e-12;
+L_calc = 1.2499e-06;
+% 2. Definición de ecuaciones: Usa '==' para igualdad simbólica.
+eq1 = (1 / (2 * pi * sqrt(L * Cm))) == fop;
+eq2 = (1 / (2 * pi * sqrt(L * (Cm + Cx)))) == fopp;
+
+% 3. Función solve: Agregué la coma entre las ecuaciones y las variables.
+sol = solve([eq1, eq2], [L, Cm]);
+
+% Extraer y mostrar resultados numéricos
+L_val = double(sol.L);
+Cm_val = double(sol.Cm);
+
+fo = (1/(2*pi*sqrt(Ct*L_val)));
+
+error_frec = ((fo-16e+06)*100)/16e+06;
+error_ind = ((L_calc-L_val)*100/L_val);
+
+fprintf('El valor de L es: %.4e H\n', L_val);
+fprintf('El valor de Cm es: %.4e F\n', Cm_val);
+fprintf('El valor de fo es: %.4e Hz\n', fo);
+fprintf('El valor del error de frec es de: %.4e \n', error_frec);
+fprintf('El valor del error de frec es de: %.4e \n', error_ind);
